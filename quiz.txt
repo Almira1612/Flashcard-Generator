@@ -1,0 +1,1 @@
+{front: abc?, back: a}{front: abc?, back: a}{front: abc?, back: a}{front: def?, back: f}{"text":"this is an ___________.","cloze":"apple","clozeDeleted":"this is an ___________.","type":"cloze"};{"text":"this is an ___________.","cloze":"orange","clozeDeleted":"this is an ___________.","type":"cloze"};
