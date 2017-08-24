@@ -2,6 +2,9 @@ var inquirer = require('inquirer');
 var BasicCard = require('./BasicCard.js');
 var ClozeCard = require('./ClozeCard.js');
 var fs = require('fs');
+var count = 0;
+var point = 0;
+var cards = 0;
 
 inquirer
   .prompt([
@@ -89,8 +92,94 @@ inquirer
         
 
     } else if (response.choice === "take the quiz"){
-
-    } else {
-        console.log('Thank you for using Flashcard-Generator, goodbye~');
-    }
-  });    
+            inquirer
+              .prompt([
+                   {
+                  type: "list",
+                  message: "Which type of cards do you want?",
+                  choices: ["Basic card", "Cloze card"],
+                  name: "whichCard"
+                }
+              ]).then(function(answers) {
+                //choose basic card------------------------------------------
+                  if (answers.choices === "Basic card") {
+                     fs.readFile("quiz.txt", "utf8", function(error, data) {
+                      var dataArr = data.split("\n");
+                 //re-display the content as an array for later use.
+                      for (var i = 0; i < dataArr.length-1; i++){
+                        var cardArr = dataArr[i].split("+");
+                        var card = new BasicCard(cardArr[0],cardArr[1]);
+                        cards.push(card);
+                      }
+              //show the front text of cards
+                var questions = function(){
+                  //   if(count < cards.length){
+                  //     console.log(cards[count].front);
+                      inquirer.prompt([
+                          {
+                            type: "input",
+                            name: "answer",
+                            message: "Answer is : ",
+                          }
+                        ]).then(function(answers){
+                            if(answers.answer === cards(count).back){
+                              count++;
+                              point++;
+                            }
+                            else {
+                              console.log("Wrong answer, the correct answer is: " + cards(count).back);
+                              count++;
+                            }
+                        questions();
+                            });
+                  //   }else {
+                  // console.log("Game over");
+                  // console.log("Your score is: " + point);
+                  //        }
+                    };
+                  questions();
+                });
+              }else {
+        //Choose Cloze card------------------------------------------ 
+             count = 0;
+             point = 0;
+             fs.readFile("dataCloze.txt", "utf8", function(error, data) {
+              var dataArr = data.split("\n");
+               for (var i = 0; i < dataArr.length-1;i++){
+                var cardArr = dataArr[i].split("+");
+                var cardC = new ClozeCard(cardArr[0],cardArr[1]);
+                cards.push(cardC);
+                   }
+                       var ClozeQuestions = function(){
+                        if(count < cards.length){
+                          cards[count].clozeDeleted();
+                           inquirer.prompt([
+                              {
+                                 type: "input",
+                                 name: "answer",
+                                 message: "Answer is : ",
+                              }
+                               ]).then(function(answers){
+                                   if(answers.answer === cards(count).cloze){
+                                     count++;
+                                     point++;
+                                   }else{
+                                     count++;
+                                     console.log("Wrong answer, the correct answer is: " + cards(count).cloze);
+                                   }
+                                   ClozeQuestions();
+                               });
+                               
+                         }else{
+                             console.log("Game over");
+                            console.log("Your score is: " + point);
+                             }
+                        };
+                    ClozeQuestions();
+                }); 
+           }
+      });
+    }else {
+          console.log('Thank you for using Flashcard-Generator, goodbye~');
+      }
+    });    

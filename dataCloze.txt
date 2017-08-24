@@ -1,1 +1,1 @@
-{"text":"this is a ___________.","cloze":"pen","clozeDeleted":"this is a ___________.","type":"cloze"};
+{"text":"this is an ___________.","cloze":"apple","clozeDeleted":"this is an ___________.","type":"cloze"};{"text":"that is a ___________.","cloze":"pen","clozeDeleted":"that is a ___________.","type":"cloze"};
